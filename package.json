@@ -1,0 +1,67 @@
+{
+  "name": "documentextract",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "^1.14.2",
+    "@cap-js/attachments": "^2.0.2",
+    "@cap-js/postgres": "^1",
+    "@sap-cloud-sdk/connectivity": "^3.26.4",
+    "@sap-cloud-sdk/http-client": "^3.26.4",
+    "@sap-cloud-sdk/resilience": "^3.26.4",
+    "@sap/cds": "^8",
+    "@sap/xssec": "^4",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.9.0",
+    "@cap-js/sqlite": "^1.9.0",
+    "@sap/cds-dk": "^8",
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "dsql": "cds deploy -2 sqlite:db.sqlite",
+    "watch": "cds watch --profile hybrid",
+    "watch-docupload": "cds watch --open docupload/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy documentextract --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "sapux": [
+    "app/admin-books",
+    "app/browse"
+  ],
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
+      },
+      "DocInfoExtraction": {
+        "kind": "rest",
+        "csrf": true,
+        "csrfInBatch": true,
+        "credentials": {
+          "destination": "DocInfoExtraction",
+          "path": "/document-information-extraction/v1/"
+        }
+      },
+      "getToken": {
+        "kind": "odata-v2",
+        "csrf": true,
+        "csrfInBatch": true,
+        "credentials": {
+          "destination": "getToken",
+          "path": "/oauth"
+        }
+      }
+    }
+  }
+}

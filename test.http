@@ -1,0 +1,8 @@
+POST  http://localhost:4004/odata/v2/document-extraction/Documents
+Content-Type: application/pdf
+slug: resumeCAP.pdf
+
+< ./resumeCAP.pdf
+
+
+

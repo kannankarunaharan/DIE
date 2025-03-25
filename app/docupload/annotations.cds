@@ -1,0 +1,1 @@
+using DocumentExtractionService as service from '../../srv/document-schema';

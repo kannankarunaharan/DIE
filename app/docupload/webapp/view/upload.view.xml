@@ -1,0 +1,115 @@
+<mvc:View controllerName="demo.doc.upload.docupload.controller.upload"
+    xmlns:l="sap.ui.layout"
+    xmlns:u="sap.ui.unified"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    class="viewPadding">
+    
+    <l:VerticalLayout class="sapUiContentPadding">
+        <!-- File Uploader -->
+        <VBox class="sapUiSmallMargin">
+            <u:FileUploader
+                id="fileUploader"
+                name="myFileUpload"
+                uploadUrl="/Documents"
+                tooltip="Upload your file to the local server"
+                change="onFileChange"
+                uploadComplete="handleUploadComplete"
+              />
+            <Button text="Upload File" press="handleUploadPress" />
+        </VBox>
+
+        <!-- Table for Uploaded Documents -->
+        <VBox class="sapUiSmallMargin">
+            <Table id="documentsTable" items="{/Documents}" mode="SingleSelect">
+                <columns>				
+                    <Column>
+                        <Text text="File Name"/>
+                    </Column>
+                    <Column>
+                        <Text text="Actions"/>
+                    </Column>
+                    <Column>
+                        <Text text="Extract"/>
+                    </Column>
+                    <Column>
+                        <Text text="Show Data"/>
+                    </Column>
+					<Column>
+                        <Text text="Delete"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{fileName}"/>
+                            <Button text="PDF" press="handleViewPDF" type="Critical" icon="sap-icon://pdf-attachment"/>
+                            <Button text="Extract" press="handleExtractData" type="Attention" icon="sap-icon://pull-down"/>
+                            <Button text="Show Data" press="handleShowData" type="Accept" icon="sap-icon://show-edit"/>
+							<Button text="Delete" press="handleDelete" type="Negative" icon="sap-icon://delete"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+	
+        </VBox>
+
+        <!-- Table to Show Extracted Details -->
+<VBox class="sapUiSmallMargin">
+    <Label text="Extracted Document Details" design="Bold" class="sapUiMediumMarginTopBottom"/>
+
+   <f:SimpleForm id="headerForm" editable="false" layout="ResponsiveGridLayout">
+        <Label text="First Name"/>
+        <Text text="{extractedData>/header/FirstName}" />
+
+        <Label text="Last Name"/>
+        <Text text="{extractedData>/header/LastName}" />
+
+        <Label text="Degree"/>
+        <Text text="{extractedData>/header/degree}" />
+
+        <Label text="Email"/>
+        <Text text="{extractedData>/header/email}"/>
+
+        <Label text="Phone"/>
+        <Text text="{extractedData>/header/phone}" />
+    </f:SimpleForm>
+
+    <Label text="Work Experience" design="Bold" class="sapUiMediumMarginTopBottom"/>
+
+    
+	<ScrollContainer
+		height='17rem' vertical='true'>		
+	
+    <Table id="workExperienceTable" items="{extractedData>/lineItems}" mode="None">
+        <columns>
+            <Column>
+                <Text text="Company"/>
+            </Column>
+            <Column>
+                <Text text="Position"/>
+            </Column>
+            <Column>
+                <Text text="Location"/>
+            </Column>
+            <Column>
+                <Text text="Duration"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{extractedData>Name}"/>
+                    <Text text="{extractedData>Position}"/>
+                    <Text text="{extractedData>location}"/>
+                    <Text text="{extractedData>Duration}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+    </ScrollContainer>
+</VBox>
+
+    </l:VerticalLayout>
+</mvc:View>
